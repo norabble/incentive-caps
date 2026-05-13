@@ -1,16 +1,47 @@
-# React + Vite
+# Incentive Cap Model
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive visualization of why AI companies systematically underinvest in safety relative to the societal optimum.
 
-Currently, two official plugins are available:
+A company's liability is capped at its market value. This means its financial incentive to prevent catastrophic harm is smaller than society's — and the model quantifies that gap. Three spending scenarios let you explore how the gap changes under different regulatory regimes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**[Download the latest release](https://github.com/norabble/incentive-caps/releases/latest)** — a single self-contained HTML file, no server required.
 
-## React Compiler
+## Scenarios
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| # | Description |
+|---|---|
+| 1 | All-organic spending — no regulation, company spends at its own optimum |
+| 2 | Organic up to the company optimum, then supplemented by regulation |
+| 3 | All spending mediated by regulation |
 
-## Expanding the ESLint configuration
+The chart shows company and societal total cost curves. Vertical markers show where each party's optimum falls; the gap between them is the underinvestment.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Parameters
+
+| Parameter | What it controls |
+|---|---|
+| Company market cap | Sets the liability cap (modeled as 50% of market cap) |
+| Societal damage | Total damage if the catastrophic event occurs |
+| Baseline probability | Probability of harm at zero safety spending |
+| Decay function | Shape of how spending reduces probability (logarithmic, linear, power law, sigmoid) |
+| Decay rate | How quickly additional spending reduces risk |
+| Regulatory penalty | Efficiency loss when spending is regulation-driven (0% = fully efficient, 100% = useless) |
+
+## Development
+
+```bash
+npm install
+npm run dev          # dev server at http://localhost:5173
+npm run build:single # build self-contained HTML to dist/index.html
+npm run lint
+```
+
+## Publishing a release
+
+```bash
+npm run publish:release          # bumps patch version
+npm run publish:release -- minor # bumps minor version
+npm run publish:release -- major # bumps major version
+```
+
+This bumps the version in `package.json`, commits, tags, and pushes. GitHub Actions then builds the single-file HTML and attaches it to a GitHub Release automatically. Requires a clean working tree.
