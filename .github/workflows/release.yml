@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm run build:single
+
+      - name: Rename artifact
+        run: |
+          VERSION=${GITHUB_REF_NAME}
+          cp dist/index.html "dist/incentive-caps-${VERSION}.html"
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${GITHUB_REF_NAME}
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --notes "Single-file build of incentive-caps ${VERSION}." \
+            "dist/incentive-caps-${VERSION}.html#incentive-caps-${VERSION}.html"
