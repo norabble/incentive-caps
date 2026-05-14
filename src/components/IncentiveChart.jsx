@@ -34,21 +34,19 @@ const annotationPlugin = {
 
     const { s1, s2, s3 } = meta;
     const xScale = scales.x;
-    const yLeft  = scales.yLeft;
     const yRight = scales.yRight;
 
     ctx.save();
 
     // Helper: pixel x from spending value
     const px = (v) => xScale.getPixelForValue(v);
-    const pyL = (v) => yLeft.getPixelForValue(v);
     const pyR = (v) => yRight.getPixelForValue(v);
 
     const top    = chartArea.top;
     const bottom = chartArea.bottom;
 
     // Draw vertical dashed line + label
-    function vLine(x, color, label, yPx) {
+    function vLine(x, color, label) {
       const xPx = px(x);
       if (xPx < chartArea.left || xPx > chartArea.right) return;
 
@@ -69,12 +67,12 @@ const annotationPlugin = {
     }
 
     // Company optimum (same across scenarios; use s1)
-    vLine(s1.xCompany, COLORS.company, fmtM(s1.xCompany), pyL(0));
+    vLine(s1.xCompany, COLORS.company, fmtM(s1.xCompany));
 
     // Societal optima
-    vLine(s1.xSociety, COLORS.society1, fmtM(s1.xSociety), pyR(0));
-    vLine(s2.xSociety, COLORS.society2, fmtM(s2.xSociety), pyR(0));
-    vLine(s3.xSociety, COLORS.society3, fmtM(s3.xSociety), pyR(0));
+    vLine(s1.xSociety, COLORS.society1, fmtM(s1.xSociety));
+    vLine(s2.xSociety, COLORS.society2, fmtM(s2.xSociety));
+    vLine(s3.xSociety, COLORS.society3, fmtM(s3.xSociety));
 
     // Kink dot on scenario 2 curve
     if (s2.xKink != null) {

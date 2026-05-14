@@ -1,7 +1,5 @@
 import { DECAY_RATE_C } from '../lib/model';
 
-const EFFICIENCY_MARKS = [0, 10, 25, 50, 75, 90, 100];
-
 function SliderRow({ label, value, min, max, step, onChange, format }) {
   return (
     <div className="slider-row">
@@ -19,11 +17,6 @@ function SliderRow({ label, value, min, max, step, onChange, format }) {
       />
     </div>
   );
-}
-
-function fmtB(v) {
-  if (v >= 1000) return `$${(v / 1000).toFixed(0)}T`;
-  return `$${v}B`;
 }
 
 export default function ControlPanel({ params, onChange }) {
